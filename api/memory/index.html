@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Memory</title>
+</head>
+
+<body>
+</body>
+
+<script>
+  // initial 和 maximum 的单位是页，每页 64KB
+  const memory = new WebAssembly.Memory({ initial: 10, maximum: 100 });
+
+  WebAssembly.instantiateStreaming(fetch('memory.wasm'), { js: { mem: memory } })
+    .then(({ instance }) => {
+      const i32 = new Uint32Array(memory.buffer);
+
+      for (let i = 0; i < 10; i++) {
+        i32[i] = i;
+      }
+
+      const sum = instance.exports.accumulate(0, 10);
+      console.log(sum);
+    });
+</script>
+
+</html>

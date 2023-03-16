@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Memory</title>
+  </head>
+  <body>
+  </body>
+  <script>
+    WebAssembly.instantiateStreaming(fetch("table.wasm"))
+      .then(({instance}) => {
+        const tbl = instance.exports.tbl;
+        console.log(tbl.get(0)());
+        console.log(tbl.get(1)());
+      });
+  </script>
+</html>
